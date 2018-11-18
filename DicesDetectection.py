@@ -1,13 +1,6 @@
 """
-	Universidad Autónoma de Colombia
-	Image Processing
-	Course Project – 2018-2
-	
 	Dices Detection
-	Juan Pablo Mosquera - Jhon Estiven Fonseca
-
 """
-
 import cv2
 import math
 import numpy as np
@@ -22,6 +15,22 @@ def loadImage(imgPath):
 def trasform(img):
 	grayScale = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 	return grayScale
+
+#Kernel creator
+def DoKernel(bit, lenght):
+	if(bit==0):
+		kernel = np.zeros((lenght,lenght),np.uint8)
+	else:
+		kernel = np.ones((lenght,lenght),np.uint8)
+
+#Show multiples images
+def multipleView(images, titles):
+	for i in range(len(titles)):
+		plt.subplot(2,3,i+1),plt.imshow(images[i],'gray')
+		plt.title(titles[i])
+		plt.xticks([]),plt.yticks([])
+
+	plt.show()
 
 #Borders detection filters
 	# gaussianBlur filter
@@ -51,42 +60,80 @@ def personalized(img, kernel):
 
 #Objects detection filters
 	#Canny
-def canny(grayScale):
-	cannyM = cv2.Canny(grayScale,50,500)
+def canny(img):
+	cannyM = cv2.Canny(img,50,500)
 	return cannyM
 
 	#Laplacian
-def laplacian(grayScale):
-	laplacianM = np.uint8(np.absolute(cv2.Laplacian(imgG, cv2.CV_64F)))
+def laplacian(img):
+	laplacianM = np.uint8(np.absolute(cv2.Laplacian(img, cv2.CV_64F)))
 	return laplacianM
+
+#Thresholding algorithms with Otsu's Binarization
+def threshBynary(img):
+	ret,threshed = cv.threshold(img,0,255,cv.THRESH_BINARY+cv.THRESH_OTSU)
+	return threshed
+
+def threshBynaryInv(img):
+	ret,threshed = cv.threshold(img,0,255,cv.THRESH_BINARY_INV+cv.THRESH_OTSU)
+	return threshed
+
+#Thresholding adaptative algorithms	
+def adaptativeMeanThresholding(img):
+	threshed = cv.adaptiveThreshold(img,255,cv.ADAPTIVE_THRESH_MEAN_C, cv.THRESH_BINARY,11,2)
+	return threshed
+
+def adaptativeGaussianThresholding(img):	
+	threshed = cv.adaptiveThreshold(img,255,cv.ADAPTIVE_THRESH_GAUSSIAN_C, cv.THRESH_BINARY,11,2)
+	return threshed
 
 #Filter for borders menu
 def filter_menu(argument):
-    switcher = {
-        1: gaussianBlur,
-        2: medianBlur,
-        3: blur,
-        4: bilateral,
-        5: personalized
-    }
-    # Get the function from switcher dictionary
-    func = switcher.get(argument, lambda: "Invalid option")
-    # Execute the function
-    return func
+	switcher = {
+		1: gaussianBlur,
+		2: medianBlur,
+		3: blur,
+		4: bilateral,
+		5: personalized
+	}
+	# Get the function from switcher dictionary
+	func = switcher.get(argument, lambda: "Invalid option")
+	# Execute the function
+	return func
 
 # #Filter for objects menu
 def filter_menu2(argument):
 	switcher = {
-        1: canny,
-        2: laplacian
-    }
-    # Get the function from switcher dictionary
-    func = switcher.get(argument, lambda: "Invalid option")
-    # Execute the function
-    return func
+		1: canny,
+		2: laplacian
+	}
+	# Get the function from switcher dictionary
+	func = switcher.get(argument, lambda: "Invalid option")
+	# Execute the function
+	return func
 
+#Threshholding algorithms menu
+def thresh_menu(argument):
+	switcher = {
+		1: threshBynary,
+		2: threshBynaryInv,
+		3: adaptativeMeanThresholding,
+		4: adaptativeGaussianThresholding
+	}
+	# Get the function from switcher dictionary
+	func = switcher.get(argument, lambda: "Invalid option")
+	# Execute the function
+	return func
 
+def runDemo():
+	titles = []
+	images = []
+	for i in range(6):
+		images.append(loadImage('demo_images/d'+str(i)+'.png'))
+		titles.append('img: d'+str(i))
+	multipleView(images, titles)
 
+runDemo()
 
 
 
