@@ -42,11 +42,11 @@ def runDemo():
 		filtered[i]=dd.blur(filtered[i])
 		filtered[i]=dd.gaussianBlur(filtered[i])
 		#adaptative gaussian thresholding
-		threshed.append(dd.adaptativeGaussianThresholding(filtered[i]))
+		threshed.append(dd.adaptativeGaussianThresholdingInv(filtered[i]))
 		titlesThreshed.append('threshed: d'+str(i))
 
 		#OPENNING
-		threshed[i] = cv2.morphologyEx(threshed[i], cv2.MORPH_OPEN, kernel)
+		threshed[i] = dd.morphologyOpen(threshed[i], kernel)
 
 	dd.multipleView(images, titles)
 	dd.multipleView(grayScale, titlesGray)

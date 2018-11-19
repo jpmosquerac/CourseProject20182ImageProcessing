@@ -82,12 +82,30 @@ def threshBynaryInv(img):
 
 #Thresholding adaptative algorithms	
 def adaptativeMeanThresholding(img):
-	threshed = cv2.adaptiveThreshold(img,255,cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY,11,2)
+	threshed = cv2.adaptiveThreshold(img,255,cv2.ADAPTIVE_THRESH_MEAN_C,
+		cv2.THRESH_BINARY,11,2)
+	return threshed
+
+def adaptativeMeanThresholdingInv(img):
+	threshed = cv2.adaptiveThreshold(img,255,cv2.ADAPTIVE_THRESH_MEAN_C,
+		cv2.THRESH_BINARY_INV,11,2)
+	return threshed
+
+def adaptativeGaussianThresholdingInv(img):	
+	threshed = cv2.adaptiveThreshold(img,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
+		cv2.THRESH_BINARY_INV,11,2)
 	return threshed
 
 def adaptativeGaussianThresholding(img):	
-	threshed = cv2.adaptiveThreshold(img,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV,11,2)
+	threshed = cv2.adaptiveThreshold(img,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
+		cv2.THRESH_BINARY,11,2)
 	return threshed
+
+#Morphological
+def morphologyOpen(img, kernel):
+	opened = cv2.morphologyEx(img, cv2.MORPH_OPEN, kernel)
+	return opened
+
 
 #Filter for borders menu
 def filter_menu(argument):
