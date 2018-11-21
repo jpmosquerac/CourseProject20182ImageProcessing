@@ -110,6 +110,10 @@ def morphologyOpen(img, kernel):
 	opened = cv2.morphologyEx(img, cv2.MORPH_OPEN, kernel)
 	return opened
 
+def detectCircles(img):
+	circles = cv2.HoughCircles(img,cv2.HOUGH_GRADIENT,2,38,
+                            param1=200,param2=60,minRadius=3,maxRadius=50)
+	return circles
 
 #Filter for borders menu
 def filter_menu(argument):

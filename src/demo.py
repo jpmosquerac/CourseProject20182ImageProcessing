@@ -14,8 +14,11 @@ def runDemo():
 	grayScale = []
 	titlesGray = []
 
-	threshed = []
-	titlesThreshed = []
+	threshedC = []
+	titlesthreshedC = []
+
+	threshedCS = []
+	titlesthreshedCS = []
 
 	circles = []
 
@@ -28,32 +31,35 @@ def runDemo():
 		grayScale.append(dd.trasform(images[i]))
 		titlesGray.append('gray d'+str(i))
 
-		threshed.append(dd.threshBinary(grayScale[i]))
-		titlesThreshed.append('threshed d'+str(i))
+		threshedC.append(dd.threshBinary(grayScale[i]))
+		titlesthreshedC.append('threshedC d'+str(i))
 
-		threshed[i] = dd.gaussianBlur(threshed[i])
-		threshed[i] = cv2.morphologyEx(threshed[i], cv2.MORPH_OPEN, kernel)
-		threshed[i] = cv2.erode(threshed[i],kernel,iterations = 1)
-		threshed[i] = cv2.morphologyEx(threshed[i], cv2.MORPH_CLOSE, kernel)
-		threshed[i] = dd.bilateral(threshed[i])
+		threshedC[i] = dd.gaussianBlur(threshedC[i])
+		threshedC[i] = cv2.morphologyEx(threshedC[i], cv2.MORPH_OPEN, kernel)
+		threshedC[i] = cv2.erode(threshedC[i],kernel,iterations = 1)
+		threshedC[i] = cv2.morphologyEx(threshedC[i], cv2.MORPH_CLOSE, kernel)
+		threshedC[i] = dd.bilateral(threshedC[i])
 
-		
-		circles.append(cv2.HoughCircles(threshed[i],cv2.HOUGH_GRADIENT,2,38,
-                            param1=200,param2=60,minRadius=3,maxRadius=50))
+		#making a copy
+		threshedS = threshedC
+		titlesthreshedS = titlesthreshedC
 
-		threshed[i] = dd.trasform2(threshed[i])
+		#detect circles
+		circles.append(dd.detectCircles(threshedC[i]))
+		#transform thresh to rgb
+		threshedC[i] = dd.trasform2(threshedC[i])
 
+	for i in range(6):
+		#painting the circles
 		circles[i] = np.uint16(np.around(circles[i]))
 		for ii in circles[i][0,:]:
 		    # draw the outer circle
-		    cv2.circle(threshed[i],(ii[0],ii[1]),ii[2],(0,255,0),8)
+		    cv2.circle(threshedC[i],(ii[0],ii[1]),ii[2],(0,255,0),8)
 		    # draw the center of the circl5
-		    cv2.circle(threshed[i],(ii[0],ii[1]),2,(0,0,255),8)
-
-		#cv2.imshow('detected circles',cimg)
+		    cv2.circle(threshedC[i],(ii[0],ii[1]),2,(0,0,255),8)
 		
 	dd.multipleView(grayScale, titlesGray)
-	dd.multipleView(threshed, titlesThreshed)
+	dd.multipleView(threshedC, titlesthreshedC)
 
 #execut the demo
 runDemo()
