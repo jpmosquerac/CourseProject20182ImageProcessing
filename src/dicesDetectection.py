@@ -18,6 +18,10 @@ def trasform(img):
 	grayScale = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 	return grayScale
 
+def trasform2(img):
+	BGR = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
+	return BGR;
+
 #Kernel creator
 def doKernel(bit, lenght):
 	if(bit==0):
@@ -37,7 +41,7 @@ def multipleView(images, titles):
 #Borders detection filters
 	# gaussianBlur filter
 def gaussianBlur(img):
-	gaussianBlurM = cv2.GaussianBlur(img,(5,5),0)
+	gaussianBlurM = cv2.GaussianBlur(img,(15,15),0)
 	return gaussianBlurM
 
 	# medianBlur filter
@@ -52,7 +56,7 @@ def blur(img):
 
 	#bilateral filter
 def bilateral(img):
-	bilateralM = cv2.bilateralFilter(testB,9,75,75)
+	bilateralM = cv2.bilateralFilter(img,9,75,75)
 	return bilateralM
 
 	#personalized filter
@@ -72,7 +76,7 @@ def laplacian(img):
 	return laplacianM
 
 #Thresholding algorithms with Otsu's Binarization
-def threshBynary(img):
+def threshBinary(img):
 	ret,threshed = cv2.threshold(img,0,255,cv2.THRESH_BINARY+cv2.THRESH_OTSU)
 	return threshed
 
